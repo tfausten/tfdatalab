@@ -1,0 +1,7 @@
+"0","#make piechart using ggplot2"
+"0","##graph total patent applications per year"
+"0","#create the necessary dataset"
+"0","annual_totals <- data.frame(matrix(nrow = 2017 - 1970, ncol = 2))"
+"0","colnames(annual_totals) <- c(""year"", ""applications"")"
+"0","annual_totals$year <- 1971:2017"
+"0","annual_totals$applications <- sapply(1971:2017, FUN = function(x){sum(ann_counts[ann_counts$year == x, ""count_app""])}) #count_app and count_inv yield equal application counts"
