@@ -1,15 +1,15 @@
-#Calculate the country dispersion index for entries in the allcountries matrix (which contains country data about applicants.
-#the same could be done with inventor-country data)
+#Calculate the country dispersion index for entries in the allcountries matrix (which contains country data about 
+#applicants. the same could be done with inventor-country data)
 
-#function to calculate the share of country entries in a single country vector and return the squares of each share (for unique entries)
-#function to calculate country dispersion for a single character vector
+#function to calculate the share of country entries in a single country vector and return the squares of each share 
+#(for unique entries) function to calculate country dispersion for a single character vector
 
 calc.disp <- function (x) {
   uni <- unique(x)
   sharevec <- vector(mode = "numeric", length = length(uni))
   
   for (i in 1:length(sharevec)) {
-    sharevec[i] <- length(which(x == uni[i]))/length(x)
+    sharevec[i] <- sum(x == uni[i])/length(x)
   }
   return(1 - sum(sharevec^2))
 }
@@ -25,7 +25,7 @@ str(allcountries_app)
 dispersion <- data.frame(family_id = 1:length(allcountries_app), D_app = NA, D_inv = NA)
 
 #use the function to calculate dispersion for all entries (and save to file for later use)
-dispersion$D_app <- sapply(allcountries_app, calc.disp)
+dispersion$D_app <- lapply(allcountries_app, calc.disp2)
 dispersion$D_inv <- sapply(allcountries_inv, calc.disp)
 save(dispersion, file = "./datasource/TPF/dispersion.Rdata")
 
@@ -66,8 +66,7 @@ for (i in 1975:2016) {
     disp_data$app_disp[disp_data$year == i & disp_data$country == y] <- mean(sub)
     disp_data$app_count[disp_data$year == i & disp_data$country == y] <- length(sub)
     
-    print(i)
-    print(y)
+    cat(i, y, " ")
   }
 }
 
