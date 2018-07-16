@@ -90,28 +90,37 @@ graph_inv_count <- ggplot(data = disp_data_iot[disp_data_iot$year < 2014 & disp_
   ylab("Patent count") +
   labs(title = "Patent counts in selected countries (inventor data, IoT-categories)", 
        caption = "CH - Switzerland, CN - China, DE - Germany, FR - France, GB - Great Britain, JP - Japan, KR - Korea, US - United States") +
+  theme_light() +
   theme(plot.caption = element_text(size = 7.5))
 
 direct.label(graph_inv_count, last.polygons)
 
 ##applicant graphs
 graph_app_disp <- ggplot(data = disp_data_iot[disp_data_iot$year < 2013 & disp_data_iot$year > 1994, ], aes(year, app_disp, color = country))+
-  stat_smooth(size = 1, se = FALSE, span = 0.3) +
+  stat_smooth(size = 0.8, se = FALSE, span = 0.3) +
   #geom_line(size = 1) +
   ylab("country dispersion") +
-  labs(title = "Country dispersion in selected countries (applicant data, IoT-categories)", 
+  labs(title = "Country dispersion in IoT-patents (applicant data)", 
        caption = "CH - Switzerland, CN - China, DE - Germany, FR - France, GB - Great Britain, JP - Japan, KR - Korea, US - United States") +
+  theme_light() +
   theme(plot.caption = element_text(size = 7.5))
 
-direct.label(graph_app_disp, last.polygons)
+png(file = "./graphs/Country dispersion in IoT-patents (applicant data).png",
+    type = "cairo", height = 1600, width = 2500, res = 320)
+direct.label(graph_app_disp, last.qp)
+dev.off()
 
 #number of patents
 graph_app_count <- ggplot(data = disp_data_iot[disp_data_iot$year < 2015 & disp_data_iot$year > 1993, ], aes(year, app_count, color = country))+
-  #stat_smooth(size = 1, se = FALSE, span = 0.3) +
-  geom_line(size = 1) +
+  #stat_smooth(size = 0.8, se = FALSE, span = 0.3) +
+  geom_line(size = 0.8) +
   ylab("Patent count") +
-  labs(title = "Patent counts in selected countries (applicant data)", 
+  labs(title = "IoT-patent counts (applicant data)", 
        caption = "CH - Switzerland, CN - China, DE - Germany, FR - France, GB - Great Britain, JP - Japan, KR - Korea, US - United States") +
+  theme_light() +
   theme(plot.caption = element_text(size = 7.5))
 
-direct.label(graph_app_count, last.polygons)
+png(file = "./graphs/IoT-patent counts (applicant data).png",
+    type = "cairo", height = 1600, width = 2500, res = 320)
+direct.label(graph_app_count, last.qp)
+dev.off()
