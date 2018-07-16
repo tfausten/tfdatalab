@@ -81,12 +81,13 @@ graph1 <- ggplot(data = disp_data[disp_data$year < 2015 & disp_data$year > 1988,
   ylab("country dispersion") +
   labs(title = "Country dispersion in selected countries (inventor data)", 
        caption = "CH - Switzerland, CN - China, DE - Germany, FR - France, GB - Great Britain, JP - Japan, KR - Korea, US - United States") +
+  theme_light() +
   theme(plot.caption = element_text(size = 7.5))
 
-# png(file = "./datasource/TPF/graphs/Country dispersion in selected countries (inventor data).png", 
-#     type = "cairo", height = 2000, width = 2500, res = 320)
-# direct.label(graph1, last.polygons)
-# dev.off()
+png(file = "./datasource/TPF/graphs/Country dispersion in selected countries (inventor data).png",
+    type = "cairo", height = 2000, width = 2500, res = 320)
+direct.label(graph1, last.polygons)
+dev.off()
 
 #patent counts800
 graph_inv_count <- ggplot(data = disp_data[disp_data$year < 2015 & disp_data$year > 1980, ], aes(year, inv_count, color = country))+
