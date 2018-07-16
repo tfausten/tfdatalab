@@ -7,7 +7,7 @@ categories:
   - R
 tags: []
 ---
-I created this blog to showcase the my learning efforts in data science, statistics and especially R programming. Studying R, I found it much easier to practice the language by applying it to real-world datasets instead of textbook examples. The first dataset I use for some experimentation is the OECD Triadic Patent Families Database. This dataset provides endless possibilities for quantitative analyses in the realm of innovation studies and intellectual property statistics.
+I created this blog to illustrate some of my learning efforts in R programming. Studying R, I found it much easier to practice the language by applying it to real-world datasets instead of textbook examples. The first dataset I use for some experimentation is the OECD Triadic Patent Families Database. This dataset provides endless possibilities for quantitative analyses in the realm of innovation studies and intellectual property statistics.
 
 ### What is the OECD Triadic Patent Families Database?
 
