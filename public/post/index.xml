@@ -17,7 +17,8 @@
       <pubDate>Mon, 09 Jul 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/07/09/patent-analysis-using-r/</guid>
-      <description>I created this blog to showcase the my learning efforts in data science, statistics and especially R programming. Studying R, I found it much easier to practice the language by applying it to real-world datasets instead of textbook examples. The first dataset I use for some experimentation is the OECD Triadic Patent Families Database. This dataset provides endless possibilities for quantitative analyses in the realm of innovation studies and intellectual property statistics.</description>
+      <description>I created this blog to illustrate some of my learning efforts in R programming. Studying R, I found it much easier to practice the language by applying it to real-world datasets instead of textbook examples. The first dataset I use for some experimentation is the OECD Triadic Patent Families Database. This dataset provides endless possibilities for quantitative analyses in the realm of innovation studies and intellectual property statistics.
+What is the OECD Triadic Patent Families Database?</description>
     </item>
     
   </channel>

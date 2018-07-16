@@ -1,6 +1,9 @@
 # file paths containing raw data (too large for sync)
 datasource/
 
+#file path for graph output not intended for the blog
+graphs/
+
 # other data files
 *.RData
 *.txt

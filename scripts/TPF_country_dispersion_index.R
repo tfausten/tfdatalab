@@ -76,16 +76,17 @@ library(directlabels)
 library(Cairo)
                         
 graph1 <- ggplot(data = disp_data[disp_data$year < 2015 & disp_data$year > 1988, ], aes(year, inv_disp, color = country))+
-  stat_smooth(size = 1, se = FALSE, span = 0.35) +
+  stat_smooth(size = 0.8, se = FALSE, span = 0.3) +
   ylab("country dispersion") +
   labs(title = "Country dispersion in selected countries (inventor data)", 
        caption = "CH - Switzerland, CN - China, DE - Germany, FR - France, GB - Great Britain, JP - Japan, KR - Korea, US - United States") +
+  theme_light() +
   theme(plot.caption = element_text(size = 7.5))
 
-# png(file = "./datasource/TPF/graphs/Country dispersion in selected countries (inventor data).png", 
-#     type = "cairo", height = 2000, width = 2500, res = 320)
-# direct.label(graph1, last.polygons)
-# dev.off()
+png(file = "./graphs/Country dispersion in selected countries (inventor data).png",
+    type = "cairo", height = 1600, width = 2500, res = 320)
+direct.label(graph1, "last.qp")
+dev.off()
 
 #patent counts800
 graph_inv_count <- ggplot(data = disp_data[disp_data$year < 2015 & disp_data$year > 1980, ], aes(year, inv_count, color = country))+
