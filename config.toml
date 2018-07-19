@@ -9,15 +9,12 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 [permalinks]
     post = "/:year/:month/:day/:slug/"
 
-#[[menu.main]]
-#    name = "About"
-#    url = "/about/"
+[[menu.main]]
+    name = "About"
+    url = "/about/"
 [[menu.main]]
     name = "GitHub"
     url = "https://github.com/tfausten/tfdatalab"
-#[[menu.main]]
-#    name = "Twitter"
-#    url = "https://twitter.com/rstudio"
 
 [params]
     description = "A blog on intellectual property statistics and other data analyses in R"

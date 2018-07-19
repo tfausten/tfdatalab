@@ -27,7 +27,8 @@ What is the OECD Triadic Patent Families Database?</description>
       <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
       
       <guid>/about/</guid>
-      <description>This is a blog on intellectual property statistics and other data analyses in R. It was built using the the blogdown package for R. The theme is the example theme from blogdown. It was forked from @jrutheiser/hugo-lithium-theme and modified by Yihui Xie.</description>
+      <description>This blog deals with intellectual property statistics and other data analyses in R. It was built using the blogdown package for R. The theme is the example theme from blogdown and was forked from @jrutheiser/hugo-lithium-theme and modified by Yihui Xie.
+This project is a learning experience for me in making and maintaining a statical website, as well as R and statistical analyses. While I will try to present interesting analyses and code examples, the contents should be taken with a grain of salt, as I have little experience in the matters I deal with here.</description>
     </item>
     
   </channel>
