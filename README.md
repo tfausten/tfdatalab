@@ -1,6 +1,6 @@
 # tfdatalab
 
-A blog project on (intellectual property) statistics in R. The site was built using the [**blogdown**](https://github.com/rstudio/blogdown) package for R by by [Yihui Xie](https://github.com/yihui).
+A blog project on (intellectual property) statistics in R. The site was built using the [blogdown](https://github.com/rstudio/blogdown) package for R by [Yihui Xie](https://github.com/yihui).
 
 This project is a learning experience for me in making and maintaining a statical website, as well as R and statistical analyses. While I will try to present interesting analyses and code examples, the contents should be taken with a grain of salt, as I have little experience in the matters I deal with here.
 
