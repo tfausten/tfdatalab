@@ -7,4 +7,4 @@ This blog deals with intellectual property statistics and other data analyses in
 
 This project is a learning experience for me in making and maintaining a statical website, as well as R and statistical analyses. While I will try to present interesting analyses and code examples, the contents should be taken with a grain of salt, as I have little experience in the matters I deal with here.
 
-The site is hosted by Netlify under a free subdomain, kindly provided by the [Rbind](https://github.com/rbind) community.
+The site is hosted by Netlify under a subdomain kindly provided by the [Rbind](https://github.com/rbind) community.
