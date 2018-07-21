@@ -1,0 +1,64 @@
+---
+title: Internationality in Innovation Networks
+author: TF
+date: '2018-07-21'
+slug: internationality-in-innovation-networks
+categories:
+  - R
+tags: []
+---
+#Internationality in innovation Networks
+
+
+```{r}
+load("../../datasource/TPF/disp_app.Rdata")
+load("../../datasource/TPF/disp_inv.Rdata")
+
+library(ggplot2)
+library(directlabels)
+
+disp_inv_sub <- disp_inv[disp_inv$country %in% c("DE", "JP", "US", "CN", "KR", "GB", "FR", "CH"), ]
+disp_app_sub <- disp_app[disp_app$country %in% c("DE", "JP", "US", "CN", "KR", "GB", "FR", "CH"), ]
+
+
+disp_inv_graph <- ggplot(data = disp_inv_sub[disp_inv_sub$year %in% 1988:2016, ], aes(year, dispersion, color = country))+
+  stat_smooth(size = 0.8, se = FALSE, span = 0.3) +
+  ylab("country dispersion") +
+  labs(title = "Country dispersion in selected countries (inventor data)",
+       caption = "CH - Switzerland, CN - China, DE - Germany, FR - France, GB - Great Britain, JP - Japan, KR - Korea, US - United States") +
+  theme_light() +
+  theme(plot.caption = element_text(size = 7.5))
+
+direct.label(disp_inv_graph, "last.qp")
+
+# #patent counts800
+# graph_inv_count <- ggplot(data = disp_data[disp_data$year < 2015 & disp_data$year > 1980, ], aes(year, inv_count, color = country))+
+#   stat_smooth(size = 1, se = FALSE, span = 0.3) +
+#   #geom_line(size = 1) +
+#   ylab("Patent count") +
+#   labs(title = "Patent counts in selected countries (inventor data)",
+#        caption = "CH - Switzerland, CN - China, DE - Germany, FR - France, GB - Great Britain, JP - Japan, KR - Korea, US - United States") +
+#   theme(plot.caption = element_text(size = 7.5))
+# 
+# direct.label(graph_inv_count, last.polygons)
+
+```
+
+```{r dispersion over time}
+#initialize data.frame for average (over all countries) annual country dispersion
+disp_avg <- data.frame(year = 1975:2017, inv = NA, app = NA)
+
+disp_avg$inv <- sapply(disp_avg$year, function(x) {mean(disp_inv$dispersion[disp_inv$year == x], na.rm = TRUE)})
+
+ggplot(data = disp_avg, aes(year, inv)) +
+  geom_smooth(size = 1, span = 0.4)
+```
+
+
+
+
+
+
+
+
+
