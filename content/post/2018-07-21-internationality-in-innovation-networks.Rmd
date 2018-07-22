@@ -10,19 +10,24 @@ tags: []
 #Internationality in innovation Networks
 
 
-```{r}
+```{r, include = FALSE}
 load("../../datasource/TPF/disp_app.Rdata")
 load("../../datasource/TPF/disp_inv.Rdata")
 
 library(ggplot2)
 library(directlabels)
 
-disp_inv_sub <- disp_inv[disp_inv$country %in% c("DE", "JP", "US", "CN", "KR", "GB", "FR", "CH"), ]
-disp_app_sub <- disp_app[disp_app$country %in% c("DE", "JP", "US", "CN", "KR", "GB", "FR", "CH"), ]
+countryselection <- c("DE", "JP", "US", "CN", "KR", "GB", "FR", "CH")
+disp_inv_sub <- disp_inv[disp_inv$country %in% countryselection, ]
+disp_app_sub <- disp_app[disp_app$country %in% countryselection, ]
 
 
-disp_inv_graph <- ggplot(data = disp_inv_sub[disp_inv_sub$year %in% 1988:2016, ], aes(year, dispersion, color = country))+
-  stat_smooth(size = 0.8, se = FALSE, span = 0.3) +
+
+```
+
+```{r inventor dispersion, warning = FALSE}
+disp_inv_graph <- ggplot(data = disp_inv_sub[disp_inv_sub$year %in% 1988:2015, ], aes(year, dispersion, color = country))+
+  stat_smooth(method = "loess", size = 0.8, se = FALSE, span = 0.3) +
   ylab("country dispersion") +
   labs(title = "Country dispersion in selected countries (inventor data)",
        caption = "CH - Switzerland, CN - China, DE - Germany, FR - France, GB - Great Britain, JP - Japan, KR - Korea, US - United States") +
@@ -30,28 +35,30 @@ disp_inv_graph <- ggplot(data = disp_inv_sub[disp_inv_sub$year %in% 1988:2016, ]
   theme(plot.caption = element_text(size = 7.5))
 
 direct.label(disp_inv_graph, "last.qp")
-
-# #patent counts800
-# graph_inv_count <- ggplot(data = disp_data[disp_data$year < 2015 & disp_data$year > 1980, ], aes(year, inv_count, color = country))+
-#   stat_smooth(size = 1, se = FALSE, span = 0.3) +
-#   #geom_line(size = 1) +
-#   ylab("Patent count") +
-#   labs(title = "Patent counts in selected countries (inventor data)",
-#        caption = "CH - Switzerland, CN - China, DE - Germany, FR - France, GB - Great Britain, JP - Japan, KR - Korea, US - United States") +
-#   theme(plot.caption = element_text(size = 7.5))
-# 
-# direct.label(graph_inv_count, last.polygons)
-
 ```
 
-```{r dispersion over time}
+```{r applicant dispersion, warning = FALSE}
+disp_app_graph <- ggplot(data = disp_app_sub[disp_app_sub$year %in% 1988:2011, ], aes(year, dispersion, color = country))+
+  stat_smooth(method = "loess", size = 0.8, se = FALSE, span = 0.3) +
+  ylab("country dispersion") +
+  labs(title = "Country dispersion in selected countries (applicant data)",
+       caption = "CH - Switzerland, CN - China, DE - Germany, FR - France, GB - Great Britain, JP - Japan, KR - Korea, US - United States") +
+  theme_light() +
+  theme(plot.caption = element_text(size = 7.5))
+
+direct.label(disp_app_graph, "last.qp")
+```
+
+
+
+```{r dispersion over time, warning = FALSE}
 #initialize data.frame for average (over all countries) annual country dispersion
-disp_avg <- data.frame(year = 1975:2017, inv = NA, app = NA)
+disp_avg <- data.frame(year = 1988:2017, inv = NA, app = NA)
 
 disp_avg$inv <- sapply(disp_avg$year, function(x) {mean(disp_inv$dispersion[disp_inv$year == x], na.rm = TRUE)})
 
 ggplot(data = disp_avg, aes(year, inv)) +
-  geom_smooth(size = 1, span = 0.4)
+  geom_smooth(method = "loess", size = 1, span = 0.4)
 ```
 
 

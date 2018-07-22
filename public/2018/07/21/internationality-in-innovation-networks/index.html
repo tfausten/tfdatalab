@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.42.2" />
+
+
+<title>Internationality in Innovation Networks - tf datalab</title>
+<meta property="og:title" content="Internationality in Innovation Networks - tf datalab">
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logotf.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/tfausten/tfdatalab">GitHub</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">1 min read</span>
+    
+
+    <h1 class="article-title">Internationality in Innovation Networks</h1>
+
+    
+    <span class="article-date">2018/07/21</span>
+    
+
+    <div class="article-content">
+      <div id="internationality-in-innovation-networks" class="section level1">
+<h1>Internationality in innovation Networks</h1>
+<pre class="r"><code>disp_inv_graph &lt;- ggplot(data = disp_inv_sub[disp_inv_sub$year %in% 1988:2015, ], aes(year, dispersion, color = country))+
+  stat_smooth(method = &quot;loess&quot;, size = 0.8, se = FALSE, span = 0.3) +
+  ylab(&quot;country dispersion&quot;) +
+  labs(title = &quot;Country dispersion in selected countries (inventor data)&quot;,
+       caption = &quot;CH - Switzerland, CN - China, DE - Germany, FR - France, GB - Great Britain, JP - Japan, KR - Korea, US - United States&quot;) +
+  theme_light() +
+  theme(plot.caption = element_text(size = 7.5))
+
+direct.label(disp_inv_graph, &quot;last.qp&quot;)</code></pre>
+<p><img src="/post/2018-07-21-internationality-in-innovation-networks_files/figure-html/inventor%20dispersion-1.png" width="800px" /></p>
+<pre class="r"><code>disp_app_graph &lt;- ggplot(data = disp_app_sub[disp_app_sub$year %in% 1988:2011, ], aes(year, dispersion, color = country))+
+  stat_smooth(method = &quot;loess&quot;, size = 0.8, se = FALSE, span = 0.3) +
+  ylab(&quot;country dispersion&quot;) +
+  labs(title = &quot;Country dispersion in selected countries (applicant data)&quot;,
+       caption = &quot;CH - Switzerland, CN - China, DE - Germany, FR - France, GB - Great Britain, JP - Japan, KR - Korea, US - United States&quot;) +
+  theme_light() +
+  theme(plot.caption = element_text(size = 7.5))
+
+direct.label(disp_app_graph, &quot;last.qp&quot;)</code></pre>
+<p><img src="/post/2018-07-21-internationality-in-innovation-networks_files/figure-html/applicant%20dispersion-1.png" width="800px" /></p>
+<pre class="r"><code>#initialize data.frame for average (over all countries) annual country dispersion
+disp_avg &lt;- data.frame(year = 1988:2017, inv = NA, app = NA)
+
+disp_avg$inv &lt;- sapply(disp_avg$year, function(x) {mean(disp_inv$dispersion[disp_inv$year == x], na.rm = TRUE)})
+
+ggplot(data = disp_avg, aes(year, inv)) +
+  geom_smooth(method = &quot;loess&quot;, size = 1, span = 0.4)</code></pre>
+<p><img src="/post/2018-07-21-internationality-in-innovation-networks_files/figure-html/dispersion%20over%20time-1.png" width="800px" /></p>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

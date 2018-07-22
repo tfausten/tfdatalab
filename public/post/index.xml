@@ -6,10 +6,19 @@
     <description>Recent content in Posts on tf datalab</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 09 Jul 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 21 Jul 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Internationality in Innovation Networks</title>
+      <link>/2018/07/21/internationality-in-innovation-networks/</link>
+      <pubDate>Sat, 21 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/07/21/internationality-in-innovation-networks/</guid>
+      <description>Internationality in innovation Networksdisp_inv_graph &amp;lt;- ggplot(data = disp_inv_sub[disp_inv_sub$year %in% 1988:2015, ], aes(year, dispersion, color = country))+stat_smooth(method = &amp;quot;loess&amp;quot;, size = 0.8, se = FALSE, span = 0.3) +ylab(&amp;quot;country dispersion&amp;quot;) +labs(title = &amp;quot;Country dispersion in selected countries (inventor data)&amp;quot;,caption = &amp;quot;CH - Switzerland, CN - China, DE - Germany, FR - France, GB - Great Britain, JP - Japan, KR - Korea, US - United States&amp;quot;) +theme_light() +theme(plot.</description>
+    </item>
     
     <item>
       <title>Patent Analysis Using R</title>
