@@ -81,5 +81,6 @@ print(time.taken <- Sys.time() - start.time)
 head(unicountries_inv)
 
 save(unicountries_inv, file = "./datasource/TPF/unicountries_inv.RData")
-rm(list = ls())
+
+rm(allcountries_inv, tpf_inv.hascountry, tpf_inventors, unicountries_inv, countrypos, i, start.time, time.taken, y)
 
