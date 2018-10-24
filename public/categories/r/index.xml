@@ -17,7 +17,9 @@
       <pubDate>Sat, 21 Jul 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/07/21/internationality-in-innovation-networks/</guid>
-      <description>Internationality in innovation Networksdisp_inv_graph &amp;lt;- ggplot(data = disp_inv_sub[disp_inv_sub$year %in% 1988:2015, ], aes(year, dispersion, color = country))+stat_smooth(method = &amp;quot;loess&amp;quot;, size = 0.8, se = FALSE, span = 0.3) +ylab(&amp;quot;country dispersion&amp;quot;) +labs(title = &amp;quot;Country dispersion in selected countries (inventor data)&amp;quot;,caption = &amp;quot;CH - Switzerland, CN - China, DE - Germany, FR - France, GB - Great Britain, JP - Japan, KR - Korea, US - United States&amp;quot;) +theme_light() +theme(plot.</description>
+      <description>Country dispersion in patent applicationsThe TPF database contains data on the country of origin of patent application (country of residence of the inventor(s) and country of the applying organizations). This allows for interesting investigations into country-specific aspects of innovative activity. In this post I will investigate the issue of country dispersion in patent data.
+What is country dispersion: Country dispersion formula: \[D = 1 - \sum_{i=1}^n S^2_{i}\]
+disp_inv_graph &amp;lt;- ggplot(data = disp_inv_sub[disp_inv_sub$year %in% 1988:2015, ], aes(year, dispersion, color = country))+stat_smooth(method = &amp;quot;loess&amp;quot;, size = 0.</description>
     </item>
     
     <item>

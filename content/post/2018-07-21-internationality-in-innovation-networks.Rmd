@@ -7,7 +7,13 @@ categories:
   - R
 tags: []
 ---
-#Internationality in innovation Networks
+#Country dispersion in patent applications
+
+The TPF database contains data on the country of origin of patent application (country of residence of the inventor(s) and country of the applying organizations). This allows for interesting investigations into country-specific aspects of innovative activity. In this post I will investigate the issue of country dispersion in patent data.
+
+What is country dispersion:
+Country dispersion formula: $$D = 1 - \sum_{i=1}^n S^2_{i}$$
+
 
 
 ```{r, include = FALSE}
