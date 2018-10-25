@@ -20,7 +20,7 @@
 
 
 
-<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/rainbow.min.css' rel='stylesheet' type='text/css' />
+<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/atom-one-dark.min.css' rel='stylesheet' type='text/css' />
 
 
 
@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">3 min read</span>
+    <span class="article-duration">4 min read</span>
     
 
     <h1 class="article-title">Internationality in Innovation Networks</h1>
@@ -74,7 +74,7 @@
 <pre class="r"><code>disp_inv_graph &lt;- ggplot(data = disp_inv_sub[disp_inv_sub$year %in% 1988:2015, ], 
                          aes(year, dispersion, color = country))+
   stat_smooth(method = &quot;loess&quot;, size = 0.8, se = FALSE, span = 0.3) +
-  ylab(&quot;country dispersion&quot;) +
+  ylab(&quot;D (inventors)&quot;) +
   labs(title = &quot;Country dispersion in selected countries (inventor data)&quot;,
        caption = &quot;CH - Switzerland, CN - China, DE - Germany, FR - France, GB - Great Britain, JP - Japan, KR - Korea, US - United States&quot;) +
   theme_light() +
@@ -82,25 +82,33 @@
 
 direct.label(disp_inv_graph, &quot;last.qp&quot;)</code></pre>
 <p><img src="/post/2018-07-21-internationality-in-innovation-networks_files/figure-html/inventor%20dispersion-1.png" width="800px" /></p>
-<pre class="r"><code>disp_app_graph &lt;- ggplot(data = disp_app_sub[disp_app_sub$year %in% 1988:2011, ], 
-                         aes(year, dispersion, color = country))+
-  stat_smooth(method = &quot;loess&quot;, size = 0.8, se = FALSE, span = 0.3) +
-  ylab(&quot;country dispersion&quot;) +
-  labs(title = &quot;Country dispersion in selected countries (applicant data)&quot;,
-       caption = &quot;CH - Switzerland, CN - China, DE - Germany, FR - France, GB - Great Britain, JP - Japan, KR - Korea, US - United States&quot;) +
-  theme_light() +
-  theme(plot.caption = element_text(size = 7.5))
-
-direct.label(disp_app_graph, &quot;last.qp&quot;)</code></pre>
+<p>The graph clearly reveals the isolated nature of Japan’s innovation system. Japan has by far the lowest country dispersion values among major innovative economies and there was no notable increase since the 1990s. Germany, France, Great Britain, Switzerland, and the US are on a positive trajectory, as would be expected considering the increasing ease of international communication, travel, and data exchange. The downtrend in these countries in recent years may be an artifact in the data, resulting from incomplete records in the newest data. The large difference between the US and Switzerland’s country dispersion index may in part be explained by the size of domestic knowledge bases. A large domestic knowledge base necessitates less input from foreign inventors. This consideration can also explain the development of country dispersion in China and South Korea. These catch-up economies experienced rapidly declining internationality in inventor networks during the proliferation of their domestic knowledge pools. Korea even approaches the absolute lows of the Japanese case, despite being a smaller economy.</p>
+</div>
+<div id="applicant-data" class="section level1">
+<h1>Applicant Data</h1>
+<p>The same analysis can be performed using applicant instead of inventor data. In the majority of cases the applicants are companies that want to protect their intellectual property. The below graph reveals that applicant dispersion increased more markedly over time than inventor dispersion. This holds true for all countries considered here. Thus, we can conclude that international innovation networks proliferated on the company/organization-level rather than between individual inventors. The ordering of countries in terms of their internationality remained roughly the same. The code to produce the following graph is almost identical to the one above, and was therefore not included again.</p>
 <p><img src="/post/2018-07-21-internationality-in-innovation-networks_files/figure-html/applicant%20dispersion-1.png" width="800px" /></p>
+</div>
+<div id="dispersion-over-time" class="section level1">
+<h1>Dispersion Over Time</h1>
+<p>The graphs above invite the assumption that country dispersion in general increases in the time period under investigation. To take a closer look at this claim, the overall country dispersion averages of all countries in the dataset can be plotted over time. The code chunk below creates a dataframe for dispersion averages, calculates them for inventor and applicant data, and plots them side-by-side.</p>
 <pre class="r"><code>#initialize data.frame for average (over all countries) annual country dispersion
-disp_avg &lt;- data.frame(year = 1988:2017, inv = NA, app = NA)
+disp_avg &lt;- data.frame(year = 1988:2016, inv = NA, app = NA)
 
 disp_avg$inv &lt;- sapply(disp_avg$year, function(x) {mean(disp_inv$dispersion[disp_inv$year == x], na.rm = TRUE)})
+disp_avg$app &lt;- sapply(disp_avg$year, function(x) {mean(disp_app$dispersion[disp_app$year == x], na.rm = TRUE)})
 
-ggplot(data = disp_avg, aes(year, inv)) +
-  geom_smooth(method = &quot;loess&quot;, size = 1, span = 0.4)</code></pre>
+library(tidyr)
+disp_avg_long &lt;- gather(disp_avg, var, D, inv, app)
+
+ggplot(data = disp_avg_long, aes(year, D, color = var)) +
+  geom_smooth(method = &quot;loess&quot;, size = 1, span = 0.4, se = FALSE) +
+  ggtitle(&quot;Average annual country dispersion&quot;) +
+  scale_color_hue(labels=c(&quot;applicant dispersion&quot;, &quot;inventor dispersion&quot;)) +
+  theme_light() +
+  theme(axis.title.y = element_blank())</code></pre>
 <p><img src="/post/2018-07-21-internationality-in-innovation-networks_files/figure-html/dispersion%20over%20time-1.png" width="800px" /></p>
+<p>In general, the two graphs support the conclusion that country dispersion increases over time. Incomplete records for the most recent years seem to be the most intuitive explanation for the marked decrease of dispersion since 2009, but this cannot be determined with certainty here. Plotting the curves side by side reveals the difference between inventor and applicant dispersion, with applicant dispersion exhibiting a much more drastic increase.</p>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1>References</h1>
