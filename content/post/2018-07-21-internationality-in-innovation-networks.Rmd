@@ -6,15 +6,15 @@ slug: internationality-in-innovation-networks
 categories:
   - R
 tags: []
+bibliography: references.bib
 ---
 #Country dispersion in patent applications
 
 The TPF database contains data on the country of origin of patent application (country of residence of the inventor(s) and country of the applying organizations). This allows for interesting investigations into country-specific aspects of innovative activity. In this post I will investigate the issue of country dispersion in patent data.
+Country dispersion is a measure of the degree of internationality of patent applications. According to Lee [-@lee2016analysis], the country dispersion index is calculated as $$D = 1 - \sum_{i=1}^N S^2_{i}$$
+where $N$ is the number of countries involved in a patent and $S_i$ is the share of inventors located in country $i$. The country dispersion index yields a value between $0$ (all inventors from one country) and $1$ (inventors dispersed across an infinite number of countries).
 
-What is country dispersion:
-Country dispersion formula: $$D = 1 - \sum_{i=1}^n S^2_{i}$$
-
-
+The result of a simple graphical analysis of country dispersion over time in selected countries (and the code to produce the plot) is depicted below. Country dispersion indexes were calculated by applying the above formula to each TPF in the database; annual country averages were then obtained by averaging the dispersion values per year and country. TPF were considered to ‘belong’ to a country, if at least one of the registered inventors (or applicant organizations) was from the respective country.
 
 ```{r, include = FALSE}
 load("../../datasource/TPF/disp_app.Rdata")
@@ -32,7 +32,8 @@ disp_app_sub <- disp_app[disp_app$country %in% countryselection, ]
 ```
 
 ```{r inventor dispersion, warning = FALSE}
-disp_inv_graph <- ggplot(data = disp_inv_sub[disp_inv_sub$year %in% 1988:2015, ], aes(year, dispersion, color = country))+
+disp_inv_graph <- ggplot(data = disp_inv_sub[disp_inv_sub$year %in% 1988:2015, ], 
+                         aes(year, dispersion, color = country))+
   stat_smooth(method = "loess", size = 0.8, se = FALSE, span = 0.3) +
   ylab("country dispersion") +
   labs(title = "Country dispersion in selected countries (inventor data)",
@@ -44,7 +45,8 @@ direct.label(disp_inv_graph, "last.qp")
 ```
 
 ```{r applicant dispersion, warning = FALSE}
-disp_app_graph <- ggplot(data = disp_app_sub[disp_app_sub$year %in% 1988:2011, ], aes(year, dispersion, color = country))+
+disp_app_graph <- ggplot(data = disp_app_sub[disp_app_sub$year %in% 1988:2011, ], 
+                         aes(year, dispersion, color = country))+
   stat_smooth(method = "loess", size = 0.8, se = FALSE, span = 0.3) +
   ylab("country dispersion") +
   labs(title = "Country dispersion in selected countries (applicant data)",
@@ -68,8 +70,7 @@ ggplot(data = disp_avg, aes(year, inv)) +
 ```
 
 
-
-
+#References
 
 
 

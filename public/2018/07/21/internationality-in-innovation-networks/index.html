@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">2 min read</span>
+    <span class="article-duration">3 min read</span>
     
 
     <h1 class="article-title">Internationality in Innovation Networks</h1>
@@ -69,9 +69,10 @@
     <div class="article-content">
       <div id="country-dispersion-in-patent-applications" class="section level1">
 <h1>Country dispersion in patent applications</h1>
-<p>The TPF database contains data on the country of origin of patent application (country of residence of the inventor(s) and country of the applying organizations). This allows for interesting investigations into country-specific aspects of innovative activity. In this post I will investigate the issue of country dispersion in patent data.</p>
-<p>What is country dispersion: Country dispersion formula: <span class="math display">\[D = 1 - \sum_{i=1}^n S^2_{i}\]</span></p>
-<pre class="r"><code>disp_inv_graph &lt;- ggplot(data = disp_inv_sub[disp_inv_sub$year %in% 1988:2015, ], aes(year, dispersion, color = country))+
+<p>The TPF database contains data on the country of origin of patent application (country of residence of the inventor(s) and country of the applying organizations). This allows for interesting investigations into country-specific aspects of innovative activity. In this post I will investigate the issue of country dispersion in patent data. Country dispersion is a measure of the degree of internationality of patent applications. According to Lee <span class="citation">(2016)</span>, the country dispersion index is calculated as <span class="math display">\[D = 1 - \sum_{i=1}^N S^2_{i}\]</span> where <span class="math inline">\(N\)</span> is the number of countries involved in a patent and <span class="math inline">\(S_i\)</span> is the share of inventors located in country <span class="math inline">\(i\)</span>. The country dispersion index yields a value between <span class="math inline">\(0\)</span> (all inventors from one country) and <span class="math inline">\(1\)</span> (inventors dispersed across an infinite number of countries).</p>
+<p>The result of a simple graphical analysis of country dispersion over time in selected countries (and the code to produce the plot) is depicted below. Country dispersion indexes were calculated by applying the above formula to each TPF in the database; annual country averages were then obtained by averaging the dispersion values per year and country. TPF were considered to ‘belong’ to a country, if at least one of the registered inventors (or applicant organizations) was from the respective country.</p>
+<pre class="r"><code>disp_inv_graph &lt;- ggplot(data = disp_inv_sub[disp_inv_sub$year %in% 1988:2015, ], 
+                         aes(year, dispersion, color = country))+
   stat_smooth(method = &quot;loess&quot;, size = 0.8, se = FALSE, span = 0.3) +
   ylab(&quot;country dispersion&quot;) +
   labs(title = &quot;Country dispersion in selected countries (inventor data)&quot;,
@@ -81,7 +82,8 @@
 
 direct.label(disp_inv_graph, &quot;last.qp&quot;)</code></pre>
 <p><img src="/post/2018-07-21-internationality-in-innovation-networks_files/figure-html/inventor%20dispersion-1.png" width="800px" /></p>
-<pre class="r"><code>disp_app_graph &lt;- ggplot(data = disp_app_sub[disp_app_sub$year %in% 1988:2011, ], aes(year, dispersion, color = country))+
+<pre class="r"><code>disp_app_graph &lt;- ggplot(data = disp_app_sub[disp_app_sub$year %in% 1988:2011, ], 
+                         aes(year, dispersion, color = country))+
   stat_smooth(method = &quot;loess&quot;, size = 0.8, se = FALSE, span = 0.3) +
   ylab(&quot;country dispersion&quot;) +
   labs(title = &quot;Country dispersion in selected countries (applicant data)&quot;,
@@ -99,6 +101,14 @@ disp_avg$inv &lt;- sapply(disp_avg$year, function(x) {mean(disp_inv$dispersion[d
 ggplot(data = disp_avg, aes(year, inv)) +
   geom_smooth(method = &quot;loess&quot;, size = 1, span = 0.4)</code></pre>
 <p><img src="/post/2018-07-21-internationality-in-innovation-networks_files/figure-html/dispersion%20over%20time-1.png" width="800px" /></p>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+<div id="refs" class="references">
+<div id="ref-lee2016analysis">
+<p>Lee, Ahreum, Ram Mudambi, and Marcelo Cano-Kollmann. 2016. “An Analysis of Japan’s Connectivity to the Global Innovation System.” <em>Multinational Business Review</em> 24 (4). Emerald Group Publishing Limited: 399–423.</p>
+</div>
+</div>
 </div>
 
     </div>
