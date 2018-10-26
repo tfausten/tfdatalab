@@ -6,10 +6,19 @@
     <description>Recent content in R on tf datalab</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 09 Jul 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 26 Oct 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Internationality in Innovation Networks</title>
+      <link>/2018/10/26/internationality-in-innovation-networks/</link>
+      <pubDate>Fri, 26 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/10/26/internationality-in-innovation-networks/</guid>
+      <description>Country dispersion in patent applicationsThe TPF database contains data on the country of origin of patent application (country of residence of the inventor(s) and country of the applying organizations). This allows for interesting investigations into country-specific aspects of innovative activity. In this post I will investigate the issue of country dispersion in patent data. Country dispersion is a measure of the degree of internationality of patent applications. According to Lee (2016), the country dispersion index is calculated as \[D = 1 - \sum_{i=1}^N S^2_{i}\] where \(N\) is the number of countries involved in a patent and \(S_i\) is the share of inventors located in country \(i\).</description>
+    </item>
     
     <item>
       <title>Patent Analysis Using R</title>

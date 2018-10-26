@@ -95,12 +95,9 @@ for (y in countries_inv) {
 save(disp_app, file = "./datasource/TPF/disp_app.Rdata")
 save(disp_inv, file = "./datasource/TPF/disp_inv.Rdata")
 
-rm(disp_app, disp_inv, dispersion, tpf_families, whichcountries_app, whichcountries_inv, whichyears, countries_app,
-   countries_inv, i, isect, unicountries_app, unicountries_inv, y, calc.disp)
 
-
-
-
+rm(unicountries_app, unicountries_inv, whichcountries_app, whichcountries_inv, whichyears, y, i,
+   countries_app, countries_inv, isect)
 
 
 

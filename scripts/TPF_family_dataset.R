@@ -79,6 +79,5 @@ tpf_families$country_inv <- as.factor(unlist(tpf_families$country_inv))
 table(tpf_families$country_app)
 
 #save the dataset
-save(tpf_families, file = "./datasource/TPF/tpf_families.RData")
 
-rm(tpf_families, unicountries_app, unicountries_inv, i)
+save(tpf_families, file = "./datasource/TPF/tpf_families.RData") 
