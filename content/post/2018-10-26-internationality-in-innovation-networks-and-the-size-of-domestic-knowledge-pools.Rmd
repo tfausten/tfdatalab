@@ -7,5 +7,5 @@ slug: internationality-in-innovation-networks-and-the-size-of-domestic-knowledge
 categories:
   - R
 tags: []
-bibliography: References.bib
+bibliography: references.bib
 ---

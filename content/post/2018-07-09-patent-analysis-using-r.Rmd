@@ -49,8 +49,10 @@ for (i in unique(ann_counts$country)){
   ann_counts[ann_counts$country == i, "count_app"] <- sapply(yearwhich, FUN = function(x) {length(intersect(x, countrywhich_app[i][[1]]))})
   ann_counts[ann_counts$country == i, "count_inv"] <- sapply(yearwhich, FUN = function(x) {length(intersect(x, countrywhich_inv[i][[1]]))})
 }
-rm(countrywhich_app, countrywhich_inv, yearwhich, i, countries) #remove temporary variables
 
+save(ann_counts, file = "../../datasource/TPF/ann_counts.RData") #save the counts to file for later use (e.g. in the knowledge-pools-post)
+
+rm(countrywhich_app, countrywhich_inv, yearwhich, i, countries) #remove temporary variables
 ```
 
 ```{r, include=FALSE}
@@ -64,7 +66,7 @@ annual_totals$year <- 1971:2017
 annual_totals$applications <- sapply(1971:2017, FUN = function(x){sum(ann_counts[ann_counts$year == x, "count_app"])}) #count_app and count_inv yield equal application counts
 ```
 
-```{r}
+```{r annual total applications line graph}
 #linegraph of TPF applications per year
 library(ggplot2)
 library(ggthemes)
