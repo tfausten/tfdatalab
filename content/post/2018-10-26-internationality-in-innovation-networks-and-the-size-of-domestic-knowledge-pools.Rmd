@@ -1,0 +1,11 @@
+---
+title: Internationality in Innovation Networks and the Size of Domestic Knowledge
+  Pools
+author: TF
+date: '2018-10-26'
+slug: internationality-in-innovation-networks-and-the-size-of-domestic-knowledge-pools
+categories:
+  - R
+tags: []
+bibliography: References.bib
+---
