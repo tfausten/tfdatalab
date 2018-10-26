@@ -1,7 +1,7 @@
 ---
 title: Internationality in Innovation Networks
 author: TF
-date: '2018-07-21'
+date: '2018-10-26'
 slug: internationality-in-innovation-networks
 categories:
   - R
@@ -62,17 +62,17 @@ direct.label(disp_app_graph, "last.qp")
 
 #Dispersion Over Time
 
-The graphs above invite the assumption that country dispersion in general increases in the time period under investigation. To take a closer look at this claim, the overall country dispersion averages of all countries in the dataset can be plotted over time. The code chunk below creates a dataframe for dispersion averages, calculates them for inventor and applicant data, and plots them side-by-side.
+The graphs above invite the assumption that country dispersion in general increases in the time period under investigation. To take a closer look at this claim, the overall country dispersion averages of all countries in the dataset can be plotted over time. The code chunk below creates a dataframe for dispersion averages, calculates them for inventor and applicant data, and plots the data.
 
 ```{r dispersion over time, warning = FALSE}
-#initialize data.frame for average (over all countries) annual country dispersion
+#initialize data.frame for annual averages (over all countries) annual country dispersion
 disp_avg <- data.frame(year = 1988:2016, inv = NA, app = NA)
 
 disp_avg$inv <- sapply(disp_avg$year, function(x) {mean(disp_inv$dispersion[disp_inv$year == x], na.rm = TRUE)})
 disp_avg$app <- sapply(disp_avg$year, function(x) {mean(disp_app$dispersion[disp_app$year == x], na.rm = TRUE)})
 
 library(tidyr)
-disp_avg_long <- gather(disp_avg, var, D, inv, app)
+disp_avg_long <- gather(disp_avg, var, D, inv, app) #transform into long data
 
 ggplot(data = disp_avg_long, aes(year, D, color = var)) +
   geom_smooth(method = "loess", size = 1, span = 0.4, se = FALSE) +
@@ -82,6 +82,6 @@ ggplot(data = disp_avg_long, aes(year, D, color = var)) +
   theme(axis.title.y = element_blank())
 ```
 
-In general, the two graphs support the conclusion that country dispersion increases over time. Incomplete records for the most recent years seem to be the most intuitive explanation for the marked decrease of dispersion since 2009, but this cannot be determined with certainty here. Plotting the curves side by side reveals the difference between inventor and applicant dispersion, with applicant dispersion exhibiting a much more drastic increase.
+In general, the graph supports the conclusion that country dispersion increases over time. Incomplete records for the most recent years seem to be the most intuitive explanation for the marked decrease of dispersion since 2009, but this cannot be determined with certainty here. Plotting the curves in one graph reveals the considerable difference between inventor and applicant dispersion, with applicant dispersion exhibiting a much more drastic increase.
 
 #References
