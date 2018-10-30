@@ -27,19 +27,34 @@ others3 <- function (data, year, limit, var = 'app') {
   others3 <- others3[- which(others3$country %in% del), ]
 }
 
-ann_counts_big <- others3(ann_counts, 2013, 10, 'inv')
-totals2013 <- ann_counts_big[ann_counts_big$year == 2013 & ann_counts_big$country != "others", ]
-totals2013[order(-totals2013$count_inv), ]
+#exclude countries that have less than x patent applications in 2013 to obtain a set of countries with a notable innovation output (inventor data is used here)
+#to create the country set
+dispdata <- others3(ann_counts, 2013, 10, 'inv')
+#drop the countries subsumed in others, single countries shall be the observation instances
+#and restrict the time period to 1980 - 2016
+dispdata <- dispdata[dispdata$country != "others" & dispdata$year %in% 1980:2016, ]
 
-hist(ann_counts_big$count_inv)
-
+#add dispersion columns to dispdata.
 load("./datasource/TPF/disp_inv.RData")
 load("./datasource/TPF/disp_app.RData")
+dispdata$invd <- mapply(function(ctry, yr) {disp_inv[disp_inv$country == ctry & disp_inv$year == yr, "dispersion"]},
+                        ctry = dispdata$country, yr = dispdata$year)
+dispdata$appd <- mapply(function(ctry, yr) {disp_app[disp_app$country == ctry & disp_app$year == yr, "dispersion"]},
+                        ctry = dispdata$country, yr = dispdata$year)
+  
+#A look at the year 2013 as a relatively recent year with relatively complete data
+attach(dispdata)
+#histogram of patent counts is strongly right-skewed
+hist(count_inv[year == 2013])
+#taking the logarithm of counts solves the problem to some extent
+hist(log(count_inv[year == 2013]))
+  
+plot(log(count_inv[year == 2013]), invd[year == 2013])
+text(log(count_inv[year == 2013]), invd[year == 2013], labels = country[year == 2013], cex = 0.7, pos = 3)
+abline(lm(invd[year == 2013] ~ log(count_inv[year == 2013])))
+summary(lm(invd[year == 2013] ~ log(count_inv[year == 2013])))
 
-#add a dispersion columns to the 'totals' dataframe.
-totals2013$inv_disp <- NA
-totals2013$inv_disp <- sapply(totals2013$country, function(x) {disp_inv[disp_inv$country == x & disp_inv$year == 2013, "dispersion"]})
-totals2013$app_disp <- sapply(totals2013$country, function(x) {disp_app[disp_app$country == x & disp_app$year == 2013, "dispersion"]})
+
 
 hist(log(totals2013$count_inv))
 plot(log(totals2013$count_inv), totals2013$inv_disp)
@@ -52,3 +67,5 @@ plot(log(totals2013$count_app), totals2013$app_disp)
 abline(lm(totals2013$app_disp ~ log(totals2013$count_app)))
 text(log(totals2013$count_app), totals2013$app_disp, labels = totals2013$country, cex =0.7, pos = 3)
 summary(lm(totals2013$app_disp ~ log(totals2013$count_app)))
+
+detach(dispdata)
