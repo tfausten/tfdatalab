@@ -29,7 +29,7 @@ others3 <- function (data, year, limit, var = 'app') {
 
 #exclude countries that have less than x patent applications in 2013 to obtain a set of countries with a notable innovation output (inventor data is used here)
 #to create the country set
-dispdata <- others3(ann_counts, 2013, 10, 'inv')
+dispdata <- others3(ann_counts, 2013, 20, 'inv')
 #drop the countries subsumed in others, single countries shall be the observation instances
 #and restrict the time period to 1980 - 2016
 dispdata <- dispdata[dispdata$country != "others" & dispdata$year %in% 1980:2016, ]
@@ -44,28 +44,41 @@ dispdata$appd <- mapply(function(ctry, yr) {disp_app[disp_app$country == ctry & 
   
 #A look at the year 2013 as a relatively recent year with relatively complete data
 attach(dispdata)
-#histogram of patent counts is strongly right-skewed
-hist(count_inv[year == 2013])
-#taking the logarithm of counts solves the problem to some extent
-hist(log(count_inv[year == 2013]))
   
 plot(log(count_inv[year == 2013]), invd[year == 2013])
 text(log(count_inv[year == 2013]), invd[year == 2013], labels = country[year == 2013], cex = 0.7, pos = 3)
 abline(lm(invd[year == 2013] ~ log(count_inv[year == 2013])))
 summary(lm(invd[year == 2013] ~ log(count_inv[year == 2013])))
 
+##ggplot
+library(ggplot2)
+library(ggrepel)
+#histogram of patent counts is strongly right-skewed
+qplot(count_inv[year == 2013], geom = "histogram", binwidth = 500, col = I("black"))
+#the logarithmic transformation of counts solves the problem to some extent
+qplot(log(count_inv[year == 2013]), geom = "histogram", binwidth = 1, col = I("black"))
 
 
-hist(log(totals2013$count_inv))
-plot(log(totals2013$count_inv), totals2013$inv_disp)
-abline(lm(totals2013$inv_disp ~ log(totals2013$count_inv)))
-text(log(totals2013$count_inv), totals2013$inv_disp, labels = totals2013$country, cex =0.7, pos = 3)
+ggplot(data = dispdata[year %in% seq(1985, 2015, 6), ], aes(x = log(count_inv), y = invd)) +
+  geom_point() +
+  geom_smooth(method = 'lm',formula = y~x) +
+  facet_wrap(~ year, ncol = 2)
+
+#2013 case in detail
+ggplot(data = dispdata[year == 2013, ], aes(x = log(count_inv), y = invd, label = country)) +
+  geom_point() +
+  geom_smooth(method = 'lm',formula = y~x) +
+  geom_text_repel()
+
+#applicant data? --> don't use
+ggplot(data = dispdata[year %in% seq(1985, 2015, 6), ], aes(x = log(count_app), y = appd)) +
+  geom_point() +
+  geom_smooth(method = 'lm',formula = y~x) +
+  facet_wrap(~ year, ncol = 2)
+
+
+
+
 summary(lm(totals2013$inv_disp ~ log(totals2013$count_inv)))
-
-hist(log(totals2013$count_app))
-plot(log(totals2013$count_app), totals2013$app_disp)
-abline(lm(totals2013$app_disp ~ log(totals2013$count_app)))
-text(log(totals2013$count_app), totals2013$app_disp, labels = totals2013$country, cex =0.7, pos = 3)
-summary(lm(totals2013$app_disp ~ log(totals2013$count_app)))
 
 detach(dispdata)
