@@ -28,11 +28,10 @@ others3 <- function (data, year, limit, var = 'app') {
 }
 
 #exclude countries that have less than x patent applications in 2013 to obtain a set of countries with a notable innovation output (inventor data is used here)
-#to create the country set
 dispdata <- others3(ann_counts, 2013, 20, 'inv')
-#drop the countries subsumed in others, single countries shall be the observation instances
+#drop the countries subsumed in others and the international category (because single countries shall be the observation instances)
 #and restrict the time period to 1980 - 2016
-dispdata <- dispdata[dispdata$country != "others" & dispdata$year %in% 1980:2016, ]
+dispdata <- dispdata[!(dispdata$country %in% c("others", "INT")) & dispdata$year %in% 1980:2016, ]
 
 #add dispersion columns to dispdata.
 load("./datasource/TPF/disp_inv.RData")
@@ -42,17 +41,12 @@ dispdata$invd <- mapply(function(ctry, yr) {disp_inv[disp_inv$country == ctry & 
 dispdata$appd <- mapply(function(ctry, yr) {disp_app[disp_app$country == ctry & disp_app$year == yr, "dispersion"]},
                         ctry = dispdata$country, yr = dispdata$year)
   
-#A look at the year 2013 as a relatively recent year with relatively complete data
-attach(dispdata)
-  
-plot(log(count_inv[year == 2013]), invd[year == 2013])
-text(log(count_inv[year == 2013]), invd[year == 2013], labels = country[year == 2013], cex = 0.7, pos = 3)
-abline(lm(invd[year == 2013] ~ log(count_inv[year == 2013])))
-summary(lm(invd[year == 2013] ~ log(count_inv[year == 2013])))
+
 
 ##ggplot
 library(ggplot2)
 library(ggrepel)
+attach(dispdata)
 #histogram of patent counts is strongly right-skewed
 qplot(count_inv[year == 2013], geom = "histogram", binwidth = 500, col = I("black"))
 #the logarithmic transformation of counts solves the problem to some extent
@@ -70,15 +64,36 @@ ggplot(data = dispdata[year == 2013, ], aes(x = log(count_inv), y = invd, label 
   geom_smooth(method = 'lm',formula = y~x) +
   geom_text_repel()
 
+#simple regression result
+model <- lm(invd[year == 2013] ~ log(count_inv[year == 2013]))
+summary(model)
+#some checks
+dispres <- resid(model)
+qqnorm(resid(model))
+qqline(resid(model))
+
+names(dispres) <- country[year == 2013]
+
+#the above seems to work. now calculate the all the residuals for the years 2003 to 2013, and average them to find countries' tendency to internationality, while controlling
+#for the influence of knowledge pool size
+#meanres <- data.frame(country = NA, value = NA)
+allres <- sapply(2003:2013, function (x) {
+  model <- lm(invd[year == x] ~ log(count_inv[year == x]))
+  res <- resid(model)
+  names(res) <- country[year == x]
+  return(res)
+})
+
+meanres <- apply(allres, 1, mean)
+meanres[order(meanres)]
+
+
+
+
 #applicant data? --> don't use
 ggplot(data = dispdata[year %in% seq(1985, 2015, 6), ], aes(x = log(count_app), y = appd)) +
   geom_point() +
   geom_smooth(method = 'lm',formula = y~x) +
   facet_wrap(~ year, ncol = 2)
-
-
-
-
-summary(lm(totals2013$inv_disp ~ log(totals2013$count_inv)))
 
 detach(dispdata)

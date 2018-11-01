@@ -6,8 +6,8 @@
 <meta name="generator" content="Hugo 0.45.1" />
 
 
-<title>Internationality in Innovation Networks and the Size of Domestic Knowledge Pools - tf datalab</title>
-<meta property="og:title" content="Internationality in Innovation Networks and the Size of Domestic Knowledge Pools - tf datalab">
+<title>Internationality and the Role of Domestic Knowledge Pools - tf datalab</title>
+<meta property="og:title" content="Internationality and the Role of Domestic Knowledge Pools - tf datalab">
 
 
 
@@ -16,6 +16,11 @@
 
 
 
+
+
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
 
 
 
@@ -52,17 +57,40 @@
 
   <article class="article">
     
-    <span class="article-duration">0 min read</span>
+    <span class="article-duration">2 min read</span>
     
 
-    <h1 class="article-title">Internationality in Innovation Networks and the Size of Domestic Knowledge Pools</h1>
+    <h1 class="article-title">Internationality and the Role of Domestic Knowledge Pools</h1>
 
     
     <span class="article-date">2018/10/26</span>
     
 
     <div class="article-content">
-      
+      <div id="the-role-of-domestic-knowledge-pools" class="section level1">
+<h1>The Role of Domestic Knowledge Pools</h1>
+<p>In a previous post (link here), I hypothesized that internationality in innovation networks is negatively related to the size of the domestic knowledge pool. Countries with a small domestic knowledge pools can be expected to depend on foreign co-operation in many areas of research, whereas countries with large innovative capacities probably have many of the necessary innovative resource within national borders. This post aims to substantiate this logic with some quantitative arguments.</p>
+<div id="how-to-measure-the-size-of-knowledge-pools" class="section level3">
+<h3>How to measure the size of knowledge pools?</h3>
+<p>I assume that the number of annual patent applications is a good measure of a the size of a country’s knowledge pool in a given year. Thus, the independent variable in the subsequent simple linear regression analysis is the count of patent applications per year and per country. Naturally, this is not completely accurate, as countries have different propensities to patent, but the patent count should provide a reasonable estimator. Furthermore, the data was reduced to contain only those countries with a significant patent output. To do this, all countries with less than 20 patent applications in the year 2013 were excluded. 2013 data was chosen to determine which countries to include in the analysis, as it is relatively recent and relatively complete (unlike data for the most recent years).</p>
+<p>For simplicity, only inventor data is considered here. The knowledge pool should be best represented by the inventors residing in a given country, not the companies that operate in the country.</p>
+</div>
+</div>
+<div id="analysis" class="section level1">
+<h1>Analysis</h1>
+<p>The histogram of patent application counts per country in the year 2013 is strongly right-skewed. There a many countries with small patent output and very few countries with very large patent output.</p>
+<pre class="r"><code>library(ggplot2)
+#dispdata is a previously creates dataframe that contains patent count and dispersion data
+attach(dispdata)
+
+qplot(count_inv[year == 2013], geom = &quot;histogram&quot;, binwidth = 500, col = I(&quot;black&quot;),
+      xlab = &quot;patent applications in 2013&quot;, ylab = &quot;count&quot;)</code></pre>
+<p><img src="/post/2018-10-26-internationality-in-innovation-networks-and-the-size-of-domestic-knowledge-pools_files/figure-html/histogram-1.png" width="800px" /> The logarithmic transformation of the patent count approximates normal distribution, which is more suitable for the linear regression analysis.</p>
+<pre class="r"><code>qplot(log(count_inv[year == 2013]), geom = &quot;histogram&quot;, binwidth = 1, col = I(&quot;black&quot;),
+      xlab = &quot;log patent applications in 2013&quot;, ylab = &quot;count&quot;)</code></pre>
+<p><img src="/post/2018-10-26-internationality-in-innovation-networks-and-the-size-of-domestic-knowledge-pools_files/figure-html/log-histogram-1.png" width="800px" /></p>
+</div>
+
     </div>
   </article>
 
@@ -84,6 +112,18 @@
 
     </div>
     
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
 
     
 

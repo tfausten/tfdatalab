@@ -1,6 +1,5 @@
 ---
-title: Internationality in Innovation Networks and the Size of Domestic Knowledge
-  Pools
+title: Internationality and the Role of Domestic Knowledge Pools
 author: TF
 date: '2018-10-26'
 slug: internationality-in-innovation-networks-and-the-size-of-domestic-knowledge-pools
@@ -9,3 +8,71 @@ categories:
 tags: []
 bibliography: references.bib
 ---
+
+# The Role of Domestic Knowledge Pools
+
+In a previous post (link here), I hypothesized that internationality in innovation networks is negatively related to the size of the domestic knowledge pool. Countries with a small domestic knowledge pools can be expected to depend on foreign co-operation in many areas of research, whereas countries with large innovative capacities probably have many of the necessary innovative resource within national borders. This post aims to substantiate this logic with some quantitative arguments.
+
+### How to measure the size of knowledge pools?
+
+I assume that the number of annual patent applications is a good measure of a the size of a country's knowledge pool in a given year. Thus, the independent variable in the subsequent simple linear regression analysis is the count of patent applications per year and per country. Naturally, this is not completely accurate, as countries have different propensities to patent, but the patent count should provide a reasonable estimator. Furthermore, the data was reduced to contain only those countries with a significant patent output. To do this, all countries with less than 20 patent applications in the year 2013 were excluded. 2013 data was chosen to determine which countries to include in the analysis, as it is relatively recent and relatively complete (unlike data for the most recent years).
+
+For simplicity, only inventor data is considered here. The knowledge pool should be best represented by the inventors residing in a given country, not the companies that operate in the country.
+
+```{r initial, include = FALSE}
+#load annual count data
+load("../../datasource/TPF/ann_counts.RData")
+
+#others function to subsume the least innovative countries under 'others' for all years (for a less cluttered dataset)
+#The year parameter determines for which year the limit value is checked (e.g. year = 2013, limit = 800, var = 'app' means that
+#all countries with less than 800 in the count_app variable in 2013 are subsumed in the others category)
+others3 <- function (data, year, limit, var = 'app') {
+  #determine which countries should be subsumed in others, using var to determine whether inv or app counts should be compared to the limit
+  if (var == 'inv') {del <- data[data$year == year & data$count_inv < limit, "country"]}
+  else {del <- data[data$year == year & data$count_app < limit, "country"]}
+  
+  #initialize data.frame that holds annual values for others
+  others3 <- data.frame(unique(data$year), "others", 0 , 0)
+  names(others3) <- c("year", "country", "count_app", "count_inv")
+  #calculate the values for each year
+  others3$count_app <- sapply(others3$year, function(x) {sum(data[data$country %in% del & data$year == x, ]$count_app)})
+  others3$count_inv <- sapply(others3$year, function(x) {sum(data[data$country %in% del & data$year == x, ]$count_inv)})
+  #bind others data.frame and originial data
+  others3 <- rbind(data, others3)
+  #delete countries subsumed in others
+  others3 <- others3[- which(others3$country %in% del), ]
+}
+
+#exclude countries that have less than x patent applications in 2013 to obtain a set of countries with a notable innovation output (inventor data is used here)
+dispdata <- others3(ann_counts, 2013, 20, 'inv')
+
+#drop the countries subsumed in others and the international category (because single countries shall be the observation instances)
+#and restrict the time period to 1980 - 2016
+dispdata <- dispdata[!(dispdata$country %in% c("others", "INT")) & dispdata$year %in% 1980:2016, ]
+
+#add dispersion columns to dispdata.
+load("../../datasource/TPF/disp_inv.RData")
+load("../../datasource/TPF/disp_app.RData")
+dispdata$invd <- mapply(function(ctry, yr) {disp_inv[disp_inv$country == ctry & disp_inv$year == yr, "dispersion"]},
+                        ctry = dispdata$country, yr = dispdata$year)
+dispdata$appd <- mapply(function(ctry, yr) {disp_app[disp_app$country == ctry & disp_app$year == yr, "dispersion"]},
+                        ctry = dispdata$country, yr = dispdata$year)
+```
+
+#Analysis
+The histogram of patent application counts per country in the year 2013 is strongly right-skewed. There a many countries with small patent output and very few countries with very large patent output.
+
+```{r histogram}
+library(ggplot2)
+#dispdata is a previously creates dataframe that contains patent count and dispersion data
+attach(dispdata)
+
+qplot(count_inv[year == 2013], geom = "histogram", binwidth = 500, col = I("black"),
+      xlab = "patent applications in 2013", ylab = "count")
+```
+The logarithmic transformation of the patent count approximates normal distribution, which is more suitable for the linear regression analysis.
+```{r log-histogram}
+qplot(log(count_inv[year == 2013]), geom = "histogram", binwidth = 1, col = I("black"),
+      xlab = "log patent applications in 2013", ylab = "count")
+```
+

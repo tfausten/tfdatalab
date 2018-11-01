@@ -1,5 +1,4 @@
 ---
-draft: yes
 title: Patent Analysis Using R
 author: TF
 date: '2018-07-09'
@@ -33,7 +32,7 @@ ggplot(annual_totals[annual_totals$year %in% 1975:2016, ], aes(year, application
   scale_y_continuous(labels = function(x) format(x, big.mark = &quot;,&quot;, scientific = FALSE)) +
   scale_x_continuous(breaks = seq(1975, 2015, 5)) +
   theme_light()</code></pre>
-<p><img src="/post/2018-07-09-patent-analysis-using-r_files/figure-html/unnamed-chunk-3-1.png" width="800px" /></p>
+<p><img src="/post/2018-07-09-patent-analysis-using-r_files/figure-html/annual%20total%20applications%20line%20graph-1.png" width="800px" /></p>
 <p>Overall, TPF applications over time exhibit a steep increase from the late 70s until the peak of about 60,000 applications in 2006. The following slump may be explained by the global financial crisis of 2007/2008, which put pressure on research budgets. Application counts fall dramatically from 2013 onward. This is explained by the time it takes for patent applications to be registered in the TPF database (applications only become TPFs once they have been filed with the three major patent offices). Additionally, the date of the earliest application was used here to determine the year.</p>
 </div>
 <div id="country-specific-applications-over-time" class="section level3">
@@ -50,8 +49,8 @@ ggappcountries &lt;- ggplot(ann_counts_big[ann_counts_big$year %in% 1980:2013, ]
   scale_y_continuous(labels = function(x) format(x, big.mark = &quot;,&quot;, scientific = FALSE)) +
   theme_light() + theme(plot.caption = element_text(size = 7.5))
 direct.label(ggappcountries, &quot;last.qp&quot;)</code></pre>
-<p><img src="/post/2018-07-09-patent-analysis-using-r_files/figure-html/unnamed-chunk-5-1.png" width="800px" /></p>
+<p><img src="/post/2018-07-09-patent-analysis-using-r_files/figure-html/unnamed-chunk-4-1.png" width="800px" /></p>
 <p>Countries to be subsumed in the ‘others’ category were selected by considering application counts in the year 2013. This resulted in Japan, the US, Germany, Korea, France, China, and the international category being the strongest applicants. South Korea and China are up-and-coming candidates, while the dominance of Japan and the US appears to be undisputed. International applications experienced a steep rise in the 2000s and an equally steep fall thereafter. Possibly international applications take longer to become registered as TPFs than single-country applications?</p>
 <p>Using almost the same code as above, the graph for TPF applications per inventor country can be created. The result is very similar except for international applications. Apparently the growth in international inventor teams was not as large as the growth in international applicant cooperation. One may hypothesize that multinational corporations from the most innovative countries still tend to primarily employ researchers from their home-country.</p>
-<p><img src="/post/2018-07-09-patent-analysis-using-r_files/figure-html/unnamed-chunk-6-1.png" width="800px" /></p>
+<p><img src="/post/2018-07-09-patent-analysis-using-r_files/figure-html/unnamed-chunk-5-1.png" width="800px" /></p>
 </div>
