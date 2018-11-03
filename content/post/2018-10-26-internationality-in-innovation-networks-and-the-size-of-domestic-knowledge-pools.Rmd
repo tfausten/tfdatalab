@@ -1,7 +1,7 @@
 ---
 title: Internationality and the Role of Domestic Knowledge Pools
 author: TF
-date: '2018-10-26'
+date: '2018-11-03'
 slug: internationality-in-innovation-networks-and-the-size-of-domestic-knowledge-pools
 categories:
   - R
@@ -61,18 +61,86 @@ dispdata$appd <- mapply(function(ctry, yr) {disp_app[disp_app$country == ctry & 
 
 #Analysis
 The histogram of patent application counts per country in the year 2013 is strongly right-skewed. There a many countries with small patent output and very few countries with very large patent output.
-
 ```{r histogram}
 library(ggplot2)
-#dispdata is a previously creates dataframe that contains patent count and dispersion data
+#dispdata is a previously created dataframe that contains patent count and dispersion data
 attach(dispdata)
 
 qplot(count_inv[year == 2013], geom = "histogram", binwidth = 500, col = I("black"),
       xlab = "patent applications in 2013", ylab = "count")
 ```
-The logarithmic transformation of the patent count approximates normal distribution, which is more suitable for the linear regression analysis.
+The logarithmic transformation of the patent count approximates normal distribution and is therefore more suitable for the linear regression analysis.
 ```{r log-histogram}
 qplot(log(count_inv[year == 2013]), geom = "histogram", binwidth = 1, col = I("black"),
-      xlab = "log patent applications in 2013", ylab = "count")
+      xlab = "log(patent applications in 2013)", ylab = "count")
 ```
+
+
+```{r linear regression graphs, warning = FALSE}
+library(ggplot2)
+library(ggrepel)
+
+ggplot(data = dispdata[year %in% seq(1985, 2015, 6), ], aes(x = log(count_inv), y = invd)) +
+  geom_point() +
+  geom_smooth(method = 'lm',formula = y~x) +
+  facet_wrap(~ year, ncol = 3) +
+  xlab("log(patent count)") + ylab("average dispersion") +
+  theme_light()
+```
+
+```{r}
+#2013 case in detail
+ggplot(data = dispdata[year == 2013, ], aes(x = log(count_inv), y = invd, label = country)) +
+  geom_point() +
+  geom_smooth(method = 'lm',formula = y~x) +
+  geom_text_repel() +
+  xlab("log(patent count)") + ylab("average dispersion") +
+  theme_light()
+```
+
+```{r}
+library(pander)
+#simple regression result
+model <- lm(invd[year == 2013] ~ log(count_inv[year == 2013]))
+pander(model)
+#some checks
+
+dispres <- data.frame(resid(model))
+names(dispres) <- "r"
+dispres$country <- country[year == 2013]
+
+qqnorm(resid(model))
+qqline(resid(model))
+```
+
+```{r}
+#the above seems to work. now calculate the all the residuals for the years 2003 to 2013, and average them to find countries' tendency to internationality, while controlling
+#for the influence of knowledge pool size
+#meanres <- data.frame(country = NA, value = NA)
+allres <- data.frame(sapply(2003:2013, function (x) {
+  model <- lm(invd[year == x] ~ log(count_inv[year == x]))
+  res <- resid(model)
+  names(res) <- country[year == x]
+  return(res)
+}))
+
+
+
+meanres <- data.frame(apply(allres, 1, mean))
+names(meanres) <- "r"
+
+
+
+isocountries <- read.csv("../../datasource/2digit ISO country codes.csv")
+isocountries <- isocountries[order(isocountries$Code), ]
+
+
+meanres$country <- isocountries[isocountries$Code %in% row.names(meanres), "Name"]
+
+(meanres[order(meanres$r), ])
+
+detach(dispdata)
+```
+
+
 

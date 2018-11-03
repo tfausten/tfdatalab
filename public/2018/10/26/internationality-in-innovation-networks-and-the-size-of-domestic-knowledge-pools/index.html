@@ -80,12 +80,12 @@
 <h1>Analysis</h1>
 <p>The histogram of patent application counts per country in the year 2013 is strongly right-skewed. There a many countries with small patent output and very few countries with very large patent output.</p>
 <pre class="r"><code>library(ggplot2)
-#dispdata is a previously creates dataframe that contains patent count and dispersion data
+#dispdata is a previously created dataframe that contains patent count and dispersion data
 attach(dispdata)
 
 qplot(count_inv[year == 2013], geom = &quot;histogram&quot;, binwidth = 500, col = I(&quot;black&quot;),
       xlab = &quot;patent applications in 2013&quot;, ylab = &quot;count&quot;)</code></pre>
-<p><img src="/post/2018-10-26-internationality-in-innovation-networks-and-the-size-of-domestic-knowledge-pools_files/figure-html/histogram-1.png" width="800px" /> The logarithmic transformation of the patent count approximates normal distribution, which is more suitable for the linear regression analysis.</p>
+<p><img src="/post/2018-10-26-internationality-in-innovation-networks-and-the-size-of-domestic-knowledge-pools_files/figure-html/histogram-1.png" width="800px" /> The logarithmic transformation of the patent count approximates normal distribution and is therefore more suitable for the linear regression analysis.</p>
 <pre class="r"><code>qplot(log(count_inv[year == 2013]), geom = &quot;histogram&quot;, binwidth = 1, col = I(&quot;black&quot;),
       xlab = &quot;log patent applications in 2013&quot;, ylab = &quot;count&quot;)</code></pre>
 <p><img src="/post/2018-10-26-internationality-in-innovation-networks-and-the-size-of-domestic-knowledge-pools_files/figure-html/log-histogram-1.png" width="800px" /></p>
