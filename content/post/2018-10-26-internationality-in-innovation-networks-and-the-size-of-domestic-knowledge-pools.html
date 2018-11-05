@@ -28,27 +28,30 @@ bibliography: references.bib
 attach(dispdata)
 
 qplot(count_inv[year == 2013], geom = &quot;histogram&quot;, binwidth = 500, col = I(&quot;black&quot;),
-      xlab = &quot;patent applications in 2013&quot;, ylab = &quot;count&quot;)</code></pre>
-<p><img src="/post/2018-10-26-internationality-in-innovation-networks-and-the-size-of-domestic-knowledge-pools_files/figure-html/histogram-1.png" width="800px" /> The logarithmic transformation of the patent count approximates normal distribution and is therefore more suitable for the linear regression analysis.</p>
+      xlab = &quot;patent applications in 2013&quot;, ylab = &quot;count&quot;, 
+      main = &quot;Distribution of patent applications per country (2013)&quot;)</code></pre>
+<p><img src="/post/2018-10-26-internationality-in-innovation-networks-and-the-size-of-domestic-knowledge-pools_files/figure-html/histogram-1.png" width="800px" /> The logarithmic transformation of the patent count approximates the normal distribution and is therefore more suitable for the linear regression analysis.</p>
 <pre class="r"><code>qplot(log(count_inv[year == 2013]), geom = &quot;histogram&quot;, binwidth = 1, col = I(&quot;black&quot;),
-      xlab = &quot;log(patent applications in 2013)&quot;, ylab = &quot;count&quot;)</code></pre>
+      xlab = &quot;log(patent applications in 2013)&quot;, ylab = &quot;count&quot;, 
+      main = &quot;Distribution of logarithmized patent applications per country (2013)&quot;)</code></pre>
 <p><img src="/post/2018-10-26-internationality-in-innovation-networks-and-the-size-of-domestic-knowledge-pools_files/figure-html/log-histogram-1.png" width="800px" /></p>
-<pre class="r"><code>library(ggplot2)
-library(ggrepel)
-
-ggplot(data = dispdata[year %in% seq(1985, 2015, 6), ], aes(x = log(count_inv), y = invd)) +
+<p>As the relationship between the size of national knowledge pools and internationality is investigated per year here, a series of annual regression analyses serves to illustrate the persistence of the hypothesized relationship over time. The below series of scatterplots with fitted regression lines showes that there is a clear negative relationship between countries’ patent count and average annual country dispersion.</p>
+<pre class="r"><code>ggplot(data = dispdata[year %in% seq(1985, 2015, 6), ], aes(x = log(count_inv), y = invd)) +
   geom_point() +
   geom_smooth(method = &#39;lm&#39;,formula = y~x) +
   facet_wrap(~ year, ncol = 3) +
-  xlab(&quot;log(patent count)&quot;) + ylab(&quot;average dispersion&quot;) +
+  xlab(&quot;log(patent count)&quot;) + ylab(&quot;average country dispersion&quot;) +
+  ggtitle(&quot;Patent count and country dispersion over time&quot;) +
   theme_light()</code></pre>
-<p><img src="/post/2018-10-26-internationality-in-innovation-networks-and-the-size-of-domestic-knowledge-pools_files/figure-html/linear%20regression%20graphs-1.png" width="800px" /></p>
-<pre class="r"><code>#2013 case in detail
+<p><img src="/post/2018-10-26-internationality-in-innovation-networks-and-the-size-of-domestic-knowledge-pools_files/figure-html/linear%20regression%20graphs-1.png" width="800px" /> The following graph illustrates the relationship in 2013 in more detail and visualizes the positions of individual countries in the scatterplot.</p>
+<pre class="r"><code>library(ggrepel)
+
 ggplot(data = dispdata[year == 2013, ], aes(x = log(count_inv), y = invd, label = country)) +
   geom_point() +
   geom_smooth(method = &#39;lm&#39;,formula = y~x) +
   geom_text_repel() +
   xlab(&quot;log(patent count)&quot;) + ylab(&quot;average dispersion&quot;) +
+  ggtitle(&quot;Patent count and country dispersion in 2013&quot;) +
   theme_light()</code></pre>
 <p><img src="/post/2018-10-26-internationality-in-innovation-networks-and-the-size-of-domestic-knowledge-pools_files/figure-html/unnamed-chunk-1-1.png" width="800px" /></p>
 <pre class="r"><code>library(pander)
@@ -112,48 +115,153 @@ allres &lt;- data.frame(sapply(2003:2013, function (x) {
 
 
 meanres &lt;- data.frame(apply(allres, 1, mean))
-names(meanres) &lt;- &quot;r&quot;
+names(meanres) &lt;- &quot;residual_d&quot;
 
 
 
 isocountries &lt;- read.csv(&quot;../../datasource/2digit ISO country codes.csv&quot;)
 isocountries &lt;- isocountries[order(isocountries$Code), ]
-
-
 meanres$country &lt;- isocountries[isocountries$Code %in% row.names(meanres), &quot;Name&quot;]
 
-(meanres[order(meanres$r), ])</code></pre>
-<pre><code>##               r                   country
-## KR -0.083119775        Korea, Republic of
-## ZA -0.057446083              South Africa
-## FI -0.053719562                   Finland
-## IL -0.046717537                    Israel
-## JP -0.045953414                     Japan
-## TW -0.042805133 Taiwan, Province of China
-## NO -0.040766693                    Norway
-## TR -0.039419385                    Turkey
-## SA -0.037472127              Saudi Arabia
-## BR -0.034397260                    Brazil
-## NZ -0.034197940               New Zealand
-## IT -0.026719381                     Italy
-## DK -0.022384118                   Denmark
-## AU -0.021782892                 Australia
-## SE -0.019450603                    Sweden
-## ES  0.003482958                     Spain
-## US  0.006217812             United States
-## FR  0.009477637                    France
-## DE  0.016490786                   Germany
-## NL  0.018208547               Netherlands
-## CN  0.019509357                     China
-## AT  0.020340100                   Austria
-## GB  0.032698726            United Kingdom
-## PL  0.033151950                    Poland
-## RU  0.043084249        Russian Federation
-## IE  0.045223614                   Ireland
-## IN  0.048033229                     India
-## CA  0.052372596                    Canada
-## SG  0.076695720                 Singapore
-## BE  0.090073102                   Belgium
-## CH  0.091291518               Switzerland</code></pre>
+
+pander(meanres[order(-meanres$r), c(2, 1)], row.names = FALSE)</code></pre>
+<table style="width:56%;">
+<colgroup>
+<col width="38%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">country</th>
+<th align="center">residual_d</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Switzerland</td>
+<td align="center">0.09129</td>
+</tr>
+<tr class="even">
+<td align="center">Belgium</td>
+<td align="center">0.09007</td>
+</tr>
+<tr class="odd">
+<td align="center">Singapore</td>
+<td align="center">0.0767</td>
+</tr>
+<tr class="even">
+<td align="center">Canada</td>
+<td align="center">0.05237</td>
+</tr>
+<tr class="odd">
+<td align="center">India</td>
+<td align="center">0.04803</td>
+</tr>
+<tr class="even">
+<td align="center">Ireland</td>
+<td align="center">0.04522</td>
+</tr>
+<tr class="odd">
+<td align="center">Russian Federation</td>
+<td align="center">0.04308</td>
+</tr>
+<tr class="even">
+<td align="center">Poland</td>
+<td align="center">0.03315</td>
+</tr>
+<tr class="odd">
+<td align="center">United Kingdom</td>
+<td align="center">0.0327</td>
+</tr>
+<tr class="even">
+<td align="center">Austria</td>
+<td align="center">0.02034</td>
+</tr>
+<tr class="odd">
+<td align="center">China</td>
+<td align="center">0.01951</td>
+</tr>
+<tr class="even">
+<td align="center">Netherlands</td>
+<td align="center">0.01821</td>
+</tr>
+<tr class="odd">
+<td align="center">Germany</td>
+<td align="center">0.01649</td>
+</tr>
+<tr class="even">
+<td align="center">France</td>
+<td align="center">0.009478</td>
+</tr>
+<tr class="odd">
+<td align="center">United States</td>
+<td align="center">0.006218</td>
+</tr>
+<tr class="even">
+<td align="center">Spain</td>
+<td align="center">0.003483</td>
+</tr>
+<tr class="odd">
+<td align="center">Sweden</td>
+<td align="center">-0.01945</td>
+</tr>
+<tr class="even">
+<td align="center">Australia</td>
+<td align="center">-0.02178</td>
+</tr>
+<tr class="odd">
+<td align="center">Denmark</td>
+<td align="center">-0.02238</td>
+</tr>
+<tr class="even">
+<td align="center">Italy</td>
+<td align="center">-0.02672</td>
+</tr>
+<tr class="odd">
+<td align="center">New Zealand</td>
+<td align="center">-0.0342</td>
+</tr>
+<tr class="even">
+<td align="center">Brazil</td>
+<td align="center">-0.0344</td>
+</tr>
+<tr class="odd">
+<td align="center">Saudi Arabia</td>
+<td align="center">-0.03747</td>
+</tr>
+<tr class="even">
+<td align="center">Turkey</td>
+<td align="center">-0.03942</td>
+</tr>
+<tr class="odd">
+<td align="center">Norway</td>
+<td align="center">-0.04077</td>
+</tr>
+<tr class="even">
+<td align="center">Taiwan, Province of China</td>
+<td align="center">-0.04281</td>
+</tr>
+<tr class="odd">
+<td align="center">Japan</td>
+<td align="center">-0.04595</td>
+</tr>
+<tr class="even">
+<td align="center">Israel</td>
+<td align="center">-0.04672</td>
+</tr>
+<tr class="odd">
+<td align="center">Finland</td>
+<td align="center">-0.05372</td>
+</tr>
+<tr class="even">
+<td align="center">South Africa</td>
+<td align="center">-0.05745</td>
+</tr>
+<tr class="odd">
+<td align="center">Korea, Republic of</td>
+<td align="center">-0.08312</td>
+</tr>
+</tbody>
+</table>
 <pre class="r"><code>detach(dispdata)</code></pre>
 </div>
