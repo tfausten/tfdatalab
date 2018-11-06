@@ -23,7 +23,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
     highlightjsVersion = "9.11.0"
     highlightjsCDN = "//cdn.bootcss.com"
     highlightjsLang = ["r", "yaml"]
-    highlightjsTheme = "atom-one-dark" #"zenburn" #"rainbow" #"tomorrow-night-eighties" #"github"
+    highlightjsTheme = "github" #"atom-one-dark" #"zenburn" #"rainbow" #"tomorrow-night-eighties" #"github"
 
     MathJaxCDN = "//cdn.bootcss.com"
     MathJaxVersion = "2.7.1"

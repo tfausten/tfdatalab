@@ -1,5 +1,5 @@
 ---
 title: ''
 date: ''
-bibliography: References.bib
+bibliography: references.bib
 ---
