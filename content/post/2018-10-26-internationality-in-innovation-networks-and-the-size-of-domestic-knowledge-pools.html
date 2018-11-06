@@ -5,7 +5,7 @@ date: '2018-11-03'
 slug: internationality-in-innovation-networks-and-the-size-of-domestic-knowledge-pools
 categories:
   - R
-tags: []
+tags: [R, patent statistics, intellectual property statistics, linear regression, knowledge pools]
 bibliography: references.bib
 ---
 
@@ -13,7 +13,7 @@ bibliography: references.bib
 
 <div id="the-role-of-domestic-knowledge-pools" class="section level1">
 <h1>The Role of Domestic Knowledge Pools</h1>
-<p>In a previous post (link here), I hypothesized that internationality in innovation networks is negatively related to the size of the domestic knowledge pool. Countries with a small domestic knowledge pools can be expected to depend on foreign co-operation in many areas of research, whereas countries with large innovative capacities probably have many of the necessary innovative resource within national borders. This post aims to substantiate this logic with some quantitative arguments.</p>
+<p>In a <a href="https://tfdatalab.rbind.io/2018/10/26/internationality-in-innovation-networks/">previous post</a>, I hypothesized that internationality in innovation networks is negatively related to the size of the domestic knowledge pool. Countries with a small domestic knowledge pools can be expected to depend on foreign co-operation in many areas of research, whereas countries with large innovative capacities probably have many of the necessary innovative resource within national borders. This post aims to substantiate this logic with some quantitative arguments.</p>
 <div id="how-to-measure-the-size-of-knowledge-pools" class="section level3">
 <h3>How to measure the size of knowledge pools?</h3>
 <p>I assume that the number of annual patent applications is a good measure of a the size of a country’s knowledge pool in a given year. Thus, the independent variable in the subsequent simple linear regression analysis is the count of patent applications per year and per country. Naturally, this is not completely accurate, as countries have different propensities to patent, but the patent count should provide a reasonable estimator. Furthermore, the data was reduced to contain only those countries with a significant patent output. To do this, all countries with less than 20 patent applications in the year 2013 were excluded. 2013 data was chosen to determine which countries to include in the analysis, as it is relatively recent and relatively complete (unlike data for the most recent years).</p>
@@ -50,14 +50,10 @@ ggplot(data = dispdata[year == 2013, ], aes(x = log(count_inv), y = invd, label 
   geom_point() +
   geom_smooth(method = &#39;lm&#39;,formula = y~x) +
   geom_text_repel() +
-  xlab(&quot;log(patent count)&quot;) + ylab(&quot;average dispersion&quot;) +
+  xlab(&quot;log(patent count)&quot;) + ylab(&quot;average country dispersion&quot;) +
   ggtitle(&quot;Patent count and country dispersion in 2013&quot;) +
   theme_light()</code></pre>
 <p><img src="/post/2018-10-26-internationality-in-innovation-networks-and-the-size-of-domestic-knowledge-pools_files/figure-html/unnamed-chunk-1-1.png" width="800px" /></p>
-<pre class="r"><code>library(pander)
-#simple regression result
-model &lt;- lm(invd[year == 2013] ~ log(count_inv[year == 2013]))
-pander(model)</code></pre>
 <table style="width:99%;">
 <caption>Fitting linear model: invd[year == 2013] ~ log(count_inv[year == 2013])</caption>
 <colgroup>
@@ -93,36 +89,22 @@ pander(model)</code></pre>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>#some checks
-
-dispres &lt;- data.frame(resid(model))
-names(dispres) &lt;- &quot;r&quot;
-dispres$country &lt;- country[year == 2013]
-
-qqnorm(resid(model))
-qqline(resid(model))</code></pre>
-<p><img src="/post/2018-10-26-internationality-in-innovation-networks-and-the-size-of-domestic-knowledge-pools_files/figure-html/unnamed-chunk-2-1.png" width="800px" /></p>
-<pre class="r"><code>#the above seems to work. now calculate the all the residuals for the years 2003 to 2013, and average them to find countries&#39; tendency to internationality, while controlling
-#for the influence of knowledge pool size
-#meanres &lt;- data.frame(country = NA, value = NA)
-allres &lt;- data.frame(sapply(2003:2013, function (x) {
+<p><img src="/post/2018-10-26-internationality-in-innovation-networks-and-the-size-of-domestic-knowledge-pools_files/figure-html/unnamed-chunk-2-1.png" width="800px" /> The negative relationship is highly significant. The Q-Q-Plot shows that the residuals are approximately normally distributed. Thus the assumption of a linear relationship is reasonable.</p>
+<p>Having established the significance of the relationship under investigation, the next step investigates how countries perform in terms of internationality when controlling for the size of their domestic knowledge pools. To do this, the residuals of regression models for the years 2003 to 2013 are calculated and aggregated into an average residual value. Ordering the countries in terms of their averaged residuals shows in how far they differ from the country dispersion values predicted by the regression model</p>
+<pre class="r"><code>allres &lt;- data.frame(sapply(2003:2013, function (x) {
   model &lt;- lm(invd[year == x] ~ log(count_inv[year == x]))
   res &lt;- resid(model)
   names(res) &lt;- country[year == x]
   return(res)
 }))
 
-
-
 meanres &lt;- data.frame(apply(allres, 1, mean))
 names(meanres) &lt;- &quot;residual_d&quot;
 
-
-
+#import a list that contains ISO 2digit country-codes to make the country names explicit
 isocountries &lt;- read.csv(&quot;../../datasource/2digit ISO country codes.csv&quot;)
 isocountries &lt;- isocountries[order(isocountries$Code), ]
 meanres$country &lt;- isocountries[isocountries$Code %in% row.names(meanres), &quot;Name&quot;]
-
 
 pander(meanres[order(-meanres$r), c(2, 1)], row.names = FALSE)</code></pre>
 <table style="width:56%;">
@@ -263,5 +245,5 @@ pander(meanres[order(-meanres$r), c(2, 1)], row.names = FALSE)</code></pre>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>detach(dispdata)</code></pre>
+<p>The above table shows that countries which perform superior in terms of the internationality of their innovation networks (when controlling for domestic knowledge pool size), are those that have close ties to other large innovators via shared language, culture, and geographical proximity (e.g. Switzerland, Belgium, Canada, Ireland).</p>
 </div>
